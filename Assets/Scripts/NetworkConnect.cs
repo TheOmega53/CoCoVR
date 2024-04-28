@@ -22,7 +22,7 @@ public class NetworkConnect : MonoBehaviour
     private float heartBeatTimer;
     private async void Awake()
     {
-        if (debugText != null) { debugText.text += "Awake Called."; };
+        if (debugText != null) { debugText.text += "Awake Called. \n"; };
 
         try
         {        
@@ -30,13 +30,14 @@ public class NetworkConnect : MonoBehaviour
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
         } catch (Exception e)
         {
-            if (debugText != null) { debugText.text += "Initialization failed. Error: " + e; };
+            if (debugText != null) { debugText.text += "Initialization failed. Error: " + e + "\n"; };
         }
         if (debugText != null) { debugText.text += "Initialized. \n"; };
 
 
         JoinOrCreate();
     }
+
 
     public async void JoinOrCreate()
     {
@@ -53,12 +54,12 @@ public class NetworkConnect : MonoBehaviour
             };
 
             Debug.LogError("Trying to join Lobby");
-            if(debugText != null) { debugText.text += "Trying to join Lobby"; };
+            if(debugText != null) { debugText.text += "Trying to join Lobby \n"; };
             currentLobby = await Lobbies.Instance.QuickJoinLobbyAsync(options);
             string relayJoinCode = currentLobby.Data["JOIN_CODE"].Value;
 
             Debug.LogError("Got join code: " + relayJoinCode);
-            if (debugText != null) { debugText.text += "Got Join code" + relayJoinCode; };
+            if (debugText != null) { debugText.text += "Got Join code" + relayJoinCode + "\n"; };
 
             JoinAllocation allocation = await RelayService.Instance.JoinAllocationAsync(relayJoinCode);
 
@@ -69,7 +70,7 @@ public class NetworkConnect : MonoBehaviour
         {
             Debug.LogError(ex.ToString());
             Debug.LogError("No lobby found, creating lobby");
-            if (debugText != null) { debugText.text += "No lobby found, creating lobby"; };
+            if (debugText != null) { debugText.text += "No lobby found, creating lobby.\n"; };
             Create();
         }       
     
@@ -79,7 +80,7 @@ public class NetworkConnect : MonoBehaviour
         Allocation allocation = await RelayService.Instance.CreateAllocationAsync(maxConnection);
         string newJoinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
         Debug.LogError("New Join Code: " + newJoinCode);
-        if (debugText != null) { debugText.text += "New Join Code: " + newJoinCode; };
+        if (debugText != null) { debugText.text += "New Join Code: " + newJoinCode + "\n"; };
 
         transport.SetHostRelayData(allocation.RelayServer.IpV4, (ushort)allocation.RelayServer.Port, allocation.AllocationIdBytes, allocation.Key, allocation.ConnectionData);
 
