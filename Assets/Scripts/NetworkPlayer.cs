@@ -10,6 +10,7 @@ public class NetworkPlayer : NetworkBehaviour
 
 
     public Renderer[] meshToDisable;
+
     // Start is called before the first frame update
 
     public override void OnNetworkSpawn()

@@ -20,6 +20,8 @@ public class NetworkConnect : MonoBehaviour
 
     private Lobby currentLobby;
     private float heartBeatTimer;
+
+    public GameObject playerInputOrigin;
     private async void Awake()
     {
         if (debugText != null) { debugText.text += "Awake Called. \n"; };
@@ -70,7 +72,7 @@ public class NetworkConnect : MonoBehaviour
         {
             Debug.LogError(ex.ToString());
             Debug.LogError("No lobby found, creating lobby");
-            if (debugText != null) { debugText.text += "No lobby found, creating lobby.\n"; };
+            if (debugText != null) { debugText.text += "No lobby found, creating lobby.\n"; };            
             Create();
         }       
     
@@ -95,6 +97,7 @@ public class NetworkConnect : MonoBehaviour
         
 
         NetworkManager.Singleton.StartHost();
+        playerInputOrigin.layer = 7;
     }
 
     public async void Join()
@@ -107,6 +110,7 @@ public class NetworkConnect : MonoBehaviour
         transport.SetClientRelayData(allocation.RelayServer.IpV4, (ushort)allocation.RelayServer.Port, allocation.AllocationIdBytes, allocation.Key, allocation.ConnectionData, allocation.HostConnectionData);
 
         NetworkManager.Singleton.StartClient();
+        playerInputOrigin.layer = 8;
     }
 
 

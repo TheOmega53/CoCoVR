@@ -7,6 +7,7 @@ public class PlayerSpawner : NetworkBehaviour
     public Vector3 hostSpawnPosition;
     public Vector3 clientSpawnPosition;
 
+
     public override void OnNetworkSpawn()
     {
         if (IsOwner)

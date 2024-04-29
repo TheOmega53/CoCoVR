@@ -11,7 +11,6 @@ public class GrabManager : MonoBehaviour
 
 
     public delegate void OnReleaseAction(GameObject obj);
-    // Define the event based on the delegate
     public static event OnReleaseAction OnReleaseEvent;
 
     private static GrabManager instance;

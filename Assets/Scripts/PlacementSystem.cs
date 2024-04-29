@@ -49,15 +49,25 @@ public class PlacementSystem : MonoBehaviour
                 Debug.Log("Grab button is being pressed");
                 foreach (var obj in GrabManager.Instance.grabbedObjects)
                 {
-                    Debug.Log("Grabbed object is same as collider");
-                    PlaceIndicator(obj);                                   
+                    if (other.transform.parent.gameObject == obj.gameObject) 
+                    {
+                        Debug.Log("Grabbed object is same as collider");
+                        //get pivot
+                        Transform pivot = obj.transform.Find("[Ray Interactor] Dynamic Attach");
+                        //place indicator using pivot
+                        PlaceIndicator(obj, pivot);
+
+                        // disable collision while grabbed
+                        SetCollision(obj, false);
+                    }                   
                 }
             }
         }
     }    
 
-    public void PlaceIndicator(GameObject obj)
-    {
+    public void PlaceIndicator(GameObject obj, Transform pivot)
+    {        
+
         Vector3Int gridposition = grid.WorldToCell(obj.transform.position);
         //show preview according to calculated soma cube position        
         //Create mesh of the obj for indicator and add it to indicator dict
@@ -128,6 +138,17 @@ public class PlacementSystem : MonoBehaviour
             GameObject.Destroy(indicatorDict[obj].gameObject);
             //remove the dict entry
             indicatorDict.Remove(obj);
+
+            //Enable Collision again.
+            SetCollision(obj, true);
+        }
+    }
+
+    public void SetCollision(GameObject obj, bool flag)
+    {
+        foreach(BoxCollider collider in obj.GetComponentsInChildren<BoxCollider>()) 
+        {
+            collider.isTrigger = !flag;
         }
     }
 
