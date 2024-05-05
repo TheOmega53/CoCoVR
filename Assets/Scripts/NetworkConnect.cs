@@ -11,6 +11,9 @@ using Unity.Netcode.Transports.UTP;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using TMPro;
+using Unity.Services.Vivox;
+using UnityEngine.InputSystem;
+using System.Threading.Tasks;
 public class NetworkConnect : MonoBehaviour
 {
     public int maxConnection = 20;
@@ -22,26 +25,46 @@ public class NetworkConnect : MonoBehaviour
     private float heartBeatTimer;
 
     public GameObject playerInputOrigin;
-    private async void Awake()
+
+
+    //These variables should be set to the projects Vivox credentials if the authentication package is not being used   
+    //Credentials are available on the Vivox Developer Portal (developer.vivox.com) or the Unity Dashboard (dashboard.unity3d.com), depending on where the organization and project were made
+    [SerializeField]
+    string _key;
+    [SerializeField]
+    string _issuer;
+    [SerializeField]
+    string _domain;
+    [SerializeField]
+    string _server;
+
+
+    public async Task InitializeUnityServices()
     {
-        if (debugText != null) { debugText.text += "Awake Called. \n"; };
+        var options = new InitializationOptions();
+        if (CheckManualCredentials())
+        {
+            options.SetVivoxCredentials(_server, _domain, _issuer, _key);
+        }
 
         try
-        {        
-        await UnityServices.InitializeAsync();
-        await AuthenticationService.Instance.SignInAnonymouslyAsync();
-        } catch (Exception e)
+        {
+            await UnityServices.InitializeAsync(options);
+            await AuthenticationService.Instance.SignInAnonymouslyAsync();
+        }
+        catch (Exception e)
         {
             if (debugText != null) { debugText.text += "Initialization failed. Error: " + e + "\n"; };
         }
         if (debugText != null) { debugText.text += "Initialized. \n"; };
-
-
-        JoinOrCreate();
     }
 
+    bool CheckManualCredentials()
+    {
+        return !(string.IsNullOrEmpty(_issuer) && string.IsNullOrEmpty(_domain) && string.IsNullOrEmpty(_server));
+    }
 
-    public async void JoinOrCreate()
+    public async Task JoinOrCreate()
     {
         try
         {

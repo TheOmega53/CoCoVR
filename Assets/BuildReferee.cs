@@ -37,6 +37,19 @@ public class BuildReferee : MonoBehaviour
 
     private bool CheckIfCorrect()
     {
+        BlocksFilled = CheckNumberOfBlocksFilled();
+        if(BlocksFilled == GoalBlocks.Count)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private int CheckNumberOfBlocksFilled()
+    {
         BlocksFilled = 0;
         foreach (KeyValuePair<Collider, bool> block in GoalBlocks)
         {
@@ -46,16 +59,7 @@ public class BuildReferee : MonoBehaviour
             }
         }
 
-        Debug.Log(BlocksFilled + " Out of " + GoalBlocks.Count + " Blocks filled");
-
-        if(BlocksFilled == GoalBlocks.Count)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return BlocksFilled;
     }
 
     public void BlockFilled(Collider collider)
