@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Unity.Services.Vivox;
 using Unity.Services.Authentication;
 using static Unity.Collections.AllocatorManager;
+using System;
 
 
 
@@ -21,7 +22,10 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private VoiceManager voiceManager;
 
+    [SerializeField]
+    public Dictionary<ulong, ClientData> ClientData => networkConnect.ClientData;
 
+    public Dictionary<string, int> profileDict;
     /// <summary>
     /// Access singleton instance through this propriety.
     /// </summary>
@@ -61,12 +65,38 @@ public class GameManager : MonoBehaviour
             Destroy(this);
         }
 
+        profileDict = new Dictionary<string, int>();
+
+        DontDestroyOnLoad(this);
+
         await networkConnect.InitializeUnityServices();
-        await VivoxService.Instance.InitializeAsync();
-        await networkConnect.JoinOrCreate();
+        await VivoxService.Instance.InitializeAsync();        
+    }
+
+
+    public async void ConnectToLobby()
+    {
+        await networkConnect.Join();
         await voiceManager.LoginToVivoxAsync();
         await voiceManager.JoinPositionalChannelAsync();
-        
+    }
 
+
+    public async void CreateLobby()
+    {
+        Debug.Log("Creating lobby");
+        await networkConnect.Create();
+        await voiceManager.LoginToVivoxAsync();
+        await voiceManager.JoinPositionalChannelAsync();
+    }
+
+    internal void StartGame()
+    {
+        networkConnect.StartGame();
+    }
+
+    internal void SetCharacter(ulong clientId, int characterId)
+    {
+        networkConnect.SetCharacter(clientId, characterId);
     }
 }

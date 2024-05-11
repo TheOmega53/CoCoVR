@@ -12,6 +12,8 @@ using Unity.Services.Authentication;
 
 public class VoiceManager : MonoBehaviour
 {
+
+
     public const string LobbyChannelName = "lobbyChannel";
 
 
@@ -21,6 +23,13 @@ public class VoiceManager : MonoBehaviour
 
     [SerializeField]
     GameObject _localPlayerGameObject;
+
+
+    private void Awake()
+    {
+        DontDestroyOnLoad(this.gameObject);
+    }
+
 
     private void Start()
     {
