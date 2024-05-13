@@ -3613,6 +3613,14 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2628708527369242090, guid: 98fe3eae02c4a15498271f9df6cd4d7a, type: 3}
+      propertyPath: m_PhysicsLayerMask.m_Bits
+      value: 513
+      objectReference: {fileID: 0}
+    - target: {fileID: 2628708527369242090, guid: 98fe3eae02c4a15498271f9df6cd4d7a, type: 3}
+      propertyPath: m_InteractionLayers.m_Bits
+      value: 513
+      objectReference: {fileID: 0}
     - target: {fileID: 3677781484120152072, guid: 98fe3eae02c4a15498271f9df6cd4d7a, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -3837,6 +3845,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6221317342164497439, guid: 98fe3eae02c4a15498271f9df6cd4d7a, type: 3}
+      propertyPath: m_PhysicsLayerMask.m_Bits
+      value: 513
+      objectReference: {fileID: 0}
+    - target: {fileID: 6221317342164497439, guid: 98fe3eae02c4a15498271f9df6cd4d7a, type: 3}
+      propertyPath: m_InteractionLayers.m_Bits
+      value: 513
+      objectReference: {fileID: 0}
     - target: {fileID: 6938278796392585232, guid: 98fe3eae02c4a15498271f9df6cd4d7a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.5
@@ -3885,9 +3901,25 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8388861854209953337, guid: 98fe3eae02c4a15498271f9df6cd4d7a, type: 3}
+      propertyPath: m_RaycastMask.m_Bits
+      value: 2147484193
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388861854209953337, guid: 98fe3eae02c4a15498271f9df6cd4d7a, type: 3}
+      propertyPath: m_InteractionLayers.m_Bits
+      value: 513
+      objectReference: {fileID: 0}
     - target: {fileID: 8619556931538542897, guid: 98fe3eae02c4a15498271f9df6cd4d7a, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8637176323263779506, guid: 98fe3eae02c4a15498271f9df6cd4d7a, type: 3}
+      propertyPath: m_RaycastMask.m_Bits
+      value: 2147484193
+      objectReference: {fileID: 0}
+    - target: {fileID: 8637176323263779506, guid: 98fe3eae02c4a15498271f9df6cd4d7a, type: 3}
+      propertyPath: m_InteractionLayers.m_Bits
+      value: 513
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -30898,6 +30930,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   networkConnect: {fileID: 2095363214}
   voiceManager: {fileID: 1948868888}
+  sessionId: 0
 --- !u!1 &1948868886
 GameObject:
   m_ObjectHideFlags: 0

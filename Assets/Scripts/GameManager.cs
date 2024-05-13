@@ -8,6 +8,8 @@ using Unity.Services.Vivox;
 using Unity.Services.Authentication;
 using static Unity.Collections.AllocatorManager;
 using System;
+using UnityEngine.UI;
+using Unity.Services.CloudSave;
 
 
 
@@ -26,6 +28,8 @@ public class GameManager : MonoBehaviour
     public Dictionary<ulong, ClientData> ClientData => networkConnect.ClientData;
 
     public Dictionary<string, int> profileDict;
+
+    public int sessionId;
     /// <summary>
     /// Access singleton instance through this propriety.
     /// </summary>
@@ -70,7 +74,10 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(this);
 
         await networkConnect.InitializeUnityServices();
-        await VivoxService.Instance.InitializeAsync();        
+        await VivoxService.Instance.InitializeAsync();
+
+        sessionId = UnityEngine.Random.Range(0, 420);
+
     }
 
 
@@ -98,5 +105,15 @@ public class GameManager : MonoBehaviour
     internal void SetCharacter(ulong clientId, int characterId)
     {
         networkConnect.SetCharacter(clientId, characterId);
+    }
+
+
+
+    // Function that you want to execute every 5 seconds
+    public async void SaveData(Dictionary<string,object> saveData)
+    {
+        Debug.Log("Saving data");                
+        await CloudSaveService.Instance.Data.Player.SaveAsync(saveData);
+        Debug.Log($"Saved data {string.Join(',', saveData)}");
     }
 }

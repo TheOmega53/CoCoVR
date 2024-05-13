@@ -65,6 +65,10 @@ PrefabInstance:
       value: Soma Cube
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 0bd9732625a8fcb4ab38c866be8060ce, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0bd9732625a8fcb4ab38c866be8060ce, type: 3}
       propertyPath: m_TagString
       value: Building Block
       objectReference: {fileID: 0}

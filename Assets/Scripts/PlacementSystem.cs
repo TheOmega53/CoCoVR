@@ -148,6 +148,10 @@ public class PlacementSystem : MonoBehaviour
     {
         foreach(BoxCollider collider in obj.GetComponentsInChildren<BoxCollider>()) 
         {
+            // disable collision with other cubes
+
+            //Physics.IgnoreLayerCollision(9, 9, !flag);  this solution works but affects all objects.
+
             collider.isTrigger = !flag;
         }
     }
