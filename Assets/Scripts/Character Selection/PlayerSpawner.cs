@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Unity.Netcode;
+using Unity.Services.Lobbies.Models;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -16,26 +17,35 @@ public class PlayerSpawner : NetworkBehaviour
         Debug.LogWarning("Called");
         if (!IsServer)
         {
-            //return;
+            return;
         }
-
-        Debug.Log("player count: " + GameManager.Instance.ClientData.Count);
+        
         foreach (var client in GameManager.Instance.ClientData)
         {
             var character = characterDatabase.GetCharacterById(client.Value.characterId);
             if(character != null)
             {
-                var characterInstance = Instantiate(character.GameplayPrefab, SpawnPosition, Quaternion.identity,gameObject.transform);
+                var characterInstance = Instantiate(character.GameplayPrefab, SpawnPosition, Quaternion.identity,gameObject.transform);                
 
+
+                characterInstance.SpawnAsPlayerObject(client.Value.clientId);
+
+
+                /*
                 var followInputComponent = characterInstance.gameObject.GetComponent<IKTargetFollowVRRig>();
+                var playerGazeTracker = characterInstance.gameObject.GetComponent <PlayerGazeTracker>();                
                 if (client.Value.clientId == NetworkManager.Singleton.LocalClientId)
                 {
                     followInputComponent.enabled = true;
-                } else
+                    playerGazeTracker.enabled = false;
+                }
+                else
                 {
                     followInputComponent.enabled = false;
+                    playerGazeTracker.enabled = true;
                 }
-                characterInstance.SpawnAsPlayerObject(client.Value.clientId);
+
+                */
             }
         }
     }

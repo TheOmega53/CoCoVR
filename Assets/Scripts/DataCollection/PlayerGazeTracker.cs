@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class PlayerGazeTracker : MonoBehaviour
+public class PlayerGazeTracker : NetworkBehaviour
 {    
 
     private float timeSpentLooking = 0f;
@@ -43,10 +44,15 @@ public class PlayerGazeTracker : MonoBehaviour
 
     private void Update()
     {
-        if (isVisible)
+        if (!IsLocalPlayer)
         {
-            // If the object is visible, increment the time spent looking
-            timeSpentLooking += Time.deltaTime;
+            if (isVisible)
+            {
+                Debug.Log("Player is visible");
+
+                // If the object is visible, increment the time spent looking
+                timeSpentLooking += Time.deltaTime;
+            }
         }
     }
 }

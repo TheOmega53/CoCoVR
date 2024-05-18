@@ -43,15 +43,15 @@ public class PlacementSystem : MonoBehaviour
         //if hand is grabbing a soma cube
         if (GrabManager.Instance.grabbedObjects.Count != 0)
         {
-            Debug.Log("grabbed not zero");
+            //Debug.Log("grabbed not zero");
             if (leftGripAction.action.ReadValue<float>() > 0 || rightGripAction.action.ReadValue<float>() > 0)
             {
-                Debug.Log("Grab button is being pressed");
+                //Debug.Log("Grab button is being pressed");
                 foreach (var obj in GrabManager.Instance.grabbedObjects)
                 {
                     if (other.transform.parent.gameObject == obj.gameObject) 
                     {
-                        Debug.Log("Grabbed object is same as collider");
+                        //Debug.Log("Grabbed object is same as collider");
                         //get pivot
                         Transform pivot = obj.transform.Find("[Ray Interactor] Dynamic Attach");
                         //place indicator using pivot

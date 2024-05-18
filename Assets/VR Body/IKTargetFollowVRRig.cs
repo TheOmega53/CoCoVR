@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.Netcode;
+using UnityEngine;
 
 [System.Serializable]
 public class VRMap
@@ -14,7 +15,7 @@ public class VRMap
     }
 }
 
-public class IKTargetFollowVRRig : MonoBehaviour
+public class IKTargetFollowVRRig : NetworkBehaviour
 {
     [Range(0,1)]
     public float turnSmoothness = 0.1f;
@@ -29,6 +30,11 @@ public class IKTargetFollowVRRig : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
+        if (!IsLocalPlayer)
+        {            
+            return;
+        }
+
         transform.position = head.ikTarget.position + headBodyPositionOffset;
         float yaw = head.vrTarget.eulerAngles.y;
         transform.rotation = Quaternion.Lerp(transform.rotation,Quaternion.Euler(transform.eulerAngles.x, yaw, transform.eulerAngles.z),turnSmoothness);
@@ -39,11 +45,12 @@ public class IKTargetFollowVRRig : MonoBehaviour
     }
 
     private void OnEnable()
-    {
-        head.vrTarget = VRRigReferences.Singleton.headVrTarget;        
+    {        
+            head.vrTarget = VRRigReferences.Singleton.headVrTarget;
 
-        leftHand.vrTarget = VRRigReferences.Singleton.leftHandVrTarget;
-        
-        rightHand.vrTarget = VRRigReferences.Singleton.rightHandVRTarget;
+            leftHand.vrTarget = VRRigReferences.Singleton.leftHandVrTarget;
+
+            rightHand.vrTarget = VRRigReferences.Singleton.rightHandVRTarget;
+
     }
 }

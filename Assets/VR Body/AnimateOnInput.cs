@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,7 +11,7 @@ public class AnimationInput
     public InputActionProperty action;
 }
 
-public class AnimateOnInput : MonoBehaviour
+public class AnimateOnInput : NetworkBehaviour
 {
     public List<AnimationInput> animationInputs;
     public Animator animator;
@@ -18,10 +19,13 @@ public class AnimateOnInput : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        foreach (var item in animationInputs)
+        if (IsLocalPlayer)
         {
-            float actionValue = item.action.action.ReadValue<float>();
-            animator.SetFloat(item.animationPropertyName, actionValue);
+            foreach (var item in animationInputs)
+            {
+                float actionValue = item.action.action.ReadValue<float>();
+                animator.SetFloat(item.animationPropertyName, actionValue);
+            }
         }
     }
 }
