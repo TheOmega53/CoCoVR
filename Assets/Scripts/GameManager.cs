@@ -116,4 +116,14 @@ public class GameManager : MonoBehaviour
         await CloudSaveService.Instance.Data.Player.SaveAsync(saveData);
         Debug.Log($"Saved data {string.Join(',', saveData)}");
     }
+
+    internal void RestartGame()
+    {
+        networkConnect.StartGame();
+    }
+
+    internal void QuitGame()
+    {
+        Application.Quit();
+    }
 }
