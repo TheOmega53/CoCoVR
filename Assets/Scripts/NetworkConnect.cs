@@ -136,7 +136,17 @@ public class NetworkConnect : MonoBehaviour
 
         Debug.LogError("Trying to join Lobby");
         if (debugText != null) { debugText.text += "Trying to join Lobby \n"; };
-        currentLobby = await Lobbies.Instance.QuickJoinLobbyAsync(options);
+        try
+        {
+            currentLobby = await Lobbies.Instance.QuickJoinLobbyAsync(options);
+        } catch (System.Exception e)
+        {
+            Debug.LogError("Error when connecting" + e.Message);
+            if (debugText != null) { debugText.text += "Error when connecting: " + e.Message + "\n"; };
+
+            StartCoroutine(ReconnectCoroutine());
+            return;
+        }
         string relayJoinCode = currentLobby.Data["JOIN_CODE"].Value;
 
         Debug.LogError("Got join code: " + relayJoinCode);
@@ -151,6 +161,12 @@ public class NetworkConnect : MonoBehaviour
         playerInputOrigin.layer = 8;
     }
 
+    private IEnumerator ReconnectCoroutine()
+    {
+        yield return new WaitForSeconds(5f);
+        Debug.Log("trying to join again..");
+        Join();
+    }
     private void ApprovalCheck(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
     {
         if (ClientData.Count >= 2 || gameHasStarted)
