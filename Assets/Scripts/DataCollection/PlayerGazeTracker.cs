@@ -1,29 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Netcode;
+//using Unity.Netcode;
 using UnityEngine;
 
-public class PlayerGazeTracker : NetworkBehaviour
+public class PlayerGazeTracker : MonoBehaviour
 {    
 
     private float timeSpentLooking = 0f;
     private bool isVisible = false;
 
 
-    private void Awake()
+    private void OnEnable()
     {
         StartCoroutine(SaveDataCoroutine());
+    }
+
+    private void OnDisable()
+    {
+        StopCoroutine(SaveDataCoroutine());
     }
 
     private void OnBecameVisible()
     {
         // When the object becomes visible, start tracking time
+        Debug.Log("Is Visible!");
         isVisible = true;
     }
 
     private void OnBecameInvisible()
     {
         // When the object becomes invisible, stop tracking time
+        Debug.Log("Is No longer Visible!");
         isVisible = false;
     }
     private IEnumerator SaveDataCoroutine()
@@ -42,17 +49,12 @@ public class PlayerGazeTracker : NetworkBehaviour
         }
     }
 
-    private void Update()
+    public void CountVisibilityTime()
     {
-        if (!IsLocalPlayer)
+        if (isVisible)
         {
-            if (isVisible)
-            {
-                Debug.Log("Player is visible");
 
-                // If the object is visible, increment the time spent looking
-                timeSpentLooking += Time.deltaTime;
-            }
+            timeSpentLooking += Time.deltaTime;
         }
     }
 }

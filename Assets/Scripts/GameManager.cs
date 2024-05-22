@@ -29,7 +29,12 @@ public class GameManager : MonoBehaviour
 
     public Dictionary<string, int> profileDict;
 
-    public int sessionId;
+    private float sessionStartTime;
+    public float sessionTime;    
+    public int sessionId;    
+    public float sessionPercentage { get; set; }
+
+    public bool coroutineRunning = false;
     /// <summary>
     /// Access singleton instance through this propriety.
     /// </summary>
@@ -99,7 +104,31 @@ public class GameManager : MonoBehaviour
 
     internal void StartGame()
     {
+        // Get the current time
+        DateTime currentTime = DateTime.UtcNow;
+
+        // Define the Unix epoch
+        DateTime epochStart = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+        // Calculate the elapsed time since the Unix epoch
+        TimeSpan elapsedTime = currentTime - epochStart;
+
+        // Convert to a float representing seconds
+        float unixTimestamp = (float)elapsedTime.TotalSeconds;
+
+        sessionStartTime = unixTimestamp;
+        var saveData = new Dictionary<string, object>{
+                  {"StartTimeID"+sessionId, sessionStartTime},
+                };
+        SaveData(saveData);
+
+
+        sessionTime = 0f;
         networkConnect.StartGame();
+        if (!coroutineRunning)
+        {
+            StartCoroutine(AutoSaveSessionTime());
+        }
     }
 
     internal void SetCharacter(ulong clientId, int characterId)
@@ -112,18 +141,53 @@ public class GameManager : MonoBehaviour
     // Function that you want to execute every 5 seconds
     public async void SaveData(Dictionary<string,object> saveData)
     {
-        Debug.Log("Saving data");                
+        //Debug.Log("Saving data");                
         await CloudSaveService.Instance.Data.Player.SaveAsync(saveData);
-        Debug.Log($"Saved data {string.Join(',', saveData)}");
-    }
-
-    internal void RestartGame()
-    {
-        networkConnect.StartGame();
+        //Debug.Log($"Saved data {string.Join(',', saveData)}");
     }
 
     internal void QuitGame()
     {
+        coroutineRunning = false;
         Application.Quit();
+    }
+
+
+
+    private IEnumerator AutoSaveSessionTime()
+    {
+        coroutineRunning = true;
+        while (true)
+        {
+            // Wait for 5 seconds
+            yield return new WaitForSeconds(1f);
+
+            var saveData = new Dictionary<string, object>{
+                  {"sessionTimeOfID"+sessionId, sessionTime},
+                };
+            SaveData(saveData);
+
+
+            var saveData2 = new Dictionary<string, object>{
+                  {"CompletionRateofID"+sessionId, sessionPercentage},
+                };
+            SaveData(saveData2);
+        }
+    }
+
+    private void Update()
+    {
+        if (networkConnect.gameHasStarted)
+        {
+                sessionTime += Time.deltaTime;
+        }
+    }
+
+    internal void SaveCompletionTime()
+    {
+        var saveData = new Dictionary<string, object>{
+                  {"CompletionTimeofID"+sessionId, sessionTime},
+                };
+        SaveData(saveData);
     }
 }

@@ -6,7 +6,7 @@ public class GameUI : MonoBehaviour
 {
     public void ReloadGame()
     {
-        GameManager.Instance.RestartGame();
+        GameManager.Instance.StartGame();
     }
 
     public void ExitGame()

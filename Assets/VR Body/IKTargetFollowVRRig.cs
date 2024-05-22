@@ -17,7 +17,7 @@ public class VRMap
 
 public class IKTargetFollowVRRig : NetworkBehaviour
 {
-    [Range(0,1)]
+    [Range(0, 1)]
     public float turnSmoothness = 0.1f;
     public VRMap head;
     public VRMap leftHand;
@@ -26,12 +26,15 @@ public class IKTargetFollowVRRig : NetworkBehaviour
     public Vector3 headBodyPositionOffset;
     public float headBodyYawOffset;
 
+    [SerializeField] PlayerGazeTracker gazeTracker;
+
 
     // Update is called once per frame
     void LateUpdate()
     {
         if (!IsLocalPlayer)
-        {            
+        {
+            gazeTracker.CountVisibilityTime();
             return;
         }
 

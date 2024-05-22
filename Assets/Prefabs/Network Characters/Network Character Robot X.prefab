@@ -1559,6 +1559,7 @@ MonoBehaviour:
     trackingRotationOffset: {x: 0, y: 0, z: 0}
   headBodyPositionOffset: {x: 0, y: -0.54, z: 0}
   headBodyYawOffset: 0
+  gazeTracker: {fileID: 4841383310259253870}
 --- !u!114 &3947762132233378340
 MonoBehaviour:
   m_ObjectHideFlags: 0

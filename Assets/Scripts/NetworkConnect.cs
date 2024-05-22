@@ -38,13 +38,13 @@ public class NetworkConnect : MonoBehaviour
     [SerializeField]
     string _server;
 
-    private bool gameHasStarted;
+    public bool gameHasStarted;
     public Dictionary<ulong, ClientData> ClientData { get; private set; }
 
 
     [Header("Settings")]
     [SerializeField] private string gameplaySceneName = "Gameplay";
-    [SerializeField] private string characterSelectSceneName = "Character Select";
+    //[SerializeField] private string characterSelectSceneName = "Character Select";
 
     //public static NetworkConnect Instance { get; private set; }
 

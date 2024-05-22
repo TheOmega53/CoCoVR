@@ -32,6 +32,8 @@ public class PlacementSystem : MonoBehaviour
     private Dictionary<GameObject,GameObject> indicatorDict = new Dictionary<GameObject,GameObject>();
 
 
+    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -129,10 +131,9 @@ public class PlacementSystem : MonoBehaviour
         if(indicatorDict.ContainsKey(obj))
         {
             
-                obj.transform.position = indicatorDict[obj].transform.position;
-                obj.transform.rotation = indicatorDict[obj].transform.rotation;
-                obj.transform.localScale = indicatorDict[obj].transform.localScale;
-
+            obj.transform.position = indicatorDict[obj].transform.position;
+            obj.transform.rotation = indicatorDict[obj].transform.rotation;
+            obj.transform.localScale = indicatorDict[obj].transform.localScale;
 
             //delete indicator object
             GameObject.Destroy(indicatorDict[obj].gameObject);

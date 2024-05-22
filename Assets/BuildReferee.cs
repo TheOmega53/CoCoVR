@@ -17,21 +17,36 @@ public class BuildReferee : MonoBehaviour
 
     public UnityEvent OnAccomplished;
 
+    public bool hasCompleted;
+
 
     private void Start()
     {
-           foreach (var collider in colliders)
+        foreach (var collider in colliders)
         {
             GoalBlocks.Add(collider, false);
         }
+
+        hasCompleted = false;
     }
 
 
     private void Update()
     {
-        if (CheckIfCorrect())
+        if(GrabManager.Instance.grabbedObjects.Count == 0)
         {
-            OnAccomplished?.Invoke();
+            if (CheckIfCorrect())
+            {
+                if (!hasCompleted)
+                {
+                    hasCompleted = true;
+                    GameManager.Instance.SaveCompletionTime();
+                    OnAccomplished?.Invoke();
+                }
+            } else
+            {
+                GameManager.Instance.sessionPercentage = (float)BlocksFilled/GoalBlocks.Count;
+            }
         }
     }
 
